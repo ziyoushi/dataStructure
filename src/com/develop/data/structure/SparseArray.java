@@ -13,7 +13,7 @@ public class SparseArray {
         //给原数组赋值
         chessArr1[1][2] = 1;
         chessArr1[2][3] = 2;
-        System.out.println("原始二维数组");
+        System.out.println("原始二维数组如下");
         for (int[] row : chessArr1) {
             for (int data : row) {
                 System.out.printf("%d\t",data);
@@ -48,7 +48,8 @@ public class SparseArray {
         spareseArr[0][1] = 11;
         spareseArr[0][2] = sum;
         //遍历原始二维数组 将非0数据存放到稀疏数组中
-        int count = 0;//count用来记录第一行非0数据
+        //count用来记录第一行非0数据
+        int count = 0;
         for (int i = 0; i < chessArr1.length; i++) {
             for (int j = 0; j < chessArr1[i].length; j++) {
                 if (chessArr1[i][j] != 0){
@@ -59,16 +60,28 @@ public class SparseArray {
                 }
             }
         }
-        System.out.println("稀疏数组");
+        System.out.println("稀疏数组如下");
         for (int[] row : spareseArr) {
             for (int data : row) {
                 System.out.printf("%d\t",data);
             }
             System.out.println();
         }
-
-
-
+        //将稀疏数组恢复成原始二位数组
+        //思路分析：
+        //1、先读取稀疏数组的第一行 根据第一行的数据来创建原始二维数组
+        int chessArr2[][] = new int[spareseArr[0][0]][spareseArr[0][1]];
+        //2、读取稀疏数组后几行(从第二行开始) 并赋值给原始二维数组
+        for (int i = 1; i < spareseArr.length; i++) {
+            chessArr2[spareseArr[i][0]][spareseArr[i][1]] = spareseArr[i][2];
+        }
+        System.out.println("恢复后的原始数组如下");
+        for (int[] row : chessArr2) {
+            for (int data : row) {
+                System.out.printf("%d\t",data);
+            }
+            System.out.println();
+        }
 
     }
 }
