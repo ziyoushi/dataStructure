@@ -1,4 +1,4 @@
-package com.develop.data.structure;
+package com.develop.data.structure.sparesearray;
 
 /**
  * @author changchen
