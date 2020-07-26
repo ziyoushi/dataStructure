@@ -35,6 +35,14 @@ public class SingleLinkedListDemo {
         System.out.println("修改后的显示");
         singleLinked.list();
 
+        //删除
+        singleLinked.del(1);
+        singleLinked.del(4);
+        singleLinked.del(3);
+        singleLinked.del(2);
+        System.out.println("删除后的显示");
+        singleLinked.list();
+
     }
 }
 
@@ -137,7 +145,37 @@ class SingleLinkedList {
             //没有找到
             System.out.printf("没有找到编号%d的节点,不能修改\n",newHeroNode.no);
         }
+    }
 
+    //删除节点
+    /**
+     * 删除节点
+     * 思路分析：
+     *  1、找到需要删除的节点的前一个节点temp
+     *  2、temp.next = temp.next.next
+     *  3、被删除的节点将不会有其他引用指向，会被垃圾回收机制回收
+     * 说明：
+     *  在比较时，是temp.next.no和需要删除的no进行比较
+     */
+    public void del(int no){
+        HeroNode temp = head;
+        boolean flag = false;//标志是否找到待删除的节点
+        while (true){
+            if (temp.next == null){//已经到链表的最后
+                break;
+            }
+            if (temp.next.no == no){
+                //找到需要删除的节点
+                flag = true;
+                break;
+            }
+            temp = temp.next;//temp后移
+        }
+        if (flag){
+            temp.next = temp.next.next;
+        }else {
+            System.out.printf("根据编号%d没有找到待删除的节点,无法删除\n",no);
+        }
 
     }
 
