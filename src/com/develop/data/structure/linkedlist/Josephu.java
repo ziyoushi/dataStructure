@@ -4,6 +4,7 @@ package com.develop.data.structure.linkedlist;
  * @author changchen
  * @create 2020-08-02 16:52
  * 约瑟夫问题
+ * 构建/遍历/出圈
  */
 public class Josephu {
     public static void main(String[] args) {
