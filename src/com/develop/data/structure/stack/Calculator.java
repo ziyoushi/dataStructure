@@ -7,7 +7,7 @@ package com.develop.data.structure.stack;
 public class Calculator {
     public static void main(String[] args) {
 
-        String expression = "3+2*6-2";
+        String expression = "30+2*6-2";
         //定义两个栈 一个数栈 一个符号栈
         ArrayStack2 numStack = new ArrayStack2(10);
         ArrayStack2 operStack = new ArrayStack2(10);
@@ -18,6 +18,7 @@ public class Calculator {
         int oper = 0;
         int res = 0;
         char ch = ' ';//将每次扫描得到的char保存到ch
+        String keyNum = "";//用于拼接多位数
         //循环扫描expression
         while (true){
             //依次得到expression的每一个字符
@@ -51,7 +52,29 @@ public class Calculator {
 
             }else {
                 //如果是数 直接入数栈
-                numStack.push(ch -48);
+               // numStack.push(ch -48);
+                //如果是多位数时，上面的代码会出现问题；
+                //分析思路
+                //1、当处理多位数时，不能发现是一个数就立即入栈 因为可能是多位数
+                //2、当处理数，需要向expression的表达式的index再看一位 如果是数就进行扫描 如果是符号才入栈
+                //3、需要定义一个变量 字符串用于拼接
+                //处理多位数
+                keyNum += ch;
+
+                //如果ch已经是expression的最后一位 直接入栈
+                if (index == expression.length() -1){
+                    numStack.push(Integer.parseInt(keyNum));
+                }else {
+                    //判断下一个字符是不是数字 如果是数字就继续扫描 如果是运算符 入栈
+                    //ps 只是看后一位 不是index++
+                    if (operStack.isOper(expression.substring(index+1,index+2).charAt(0))){
+                        //运算符 直接入栈
+                        numStack.push(Integer.parseInt(keyNum));
+                        //注意：要清空keyNum
+                        keyNum = "";
+                    }
+                }
+
             }
             //让index+1 并判断是否扫描到expression的最后一个
             index++;
@@ -75,8 +98,6 @@ public class Calculator {
         //将数栈的最后数pop，就是结果
         int res2 = numStack.pop();
         System.out.printf("表达式%s = %d",expression,res2);
-
-
 
     }
 }
