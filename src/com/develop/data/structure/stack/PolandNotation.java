@@ -16,14 +16,18 @@ public class PolandNotation {
         String expression = "1+((2+3)*4)-5";
 
         List<String> ls = toInfixExpressionList(expression);
-        System.out.println(ls);
+        System.out.println("中缀表达式的list="+ls);
         //将得到的中缀表达式list转换成后缀表达式list
 
+        List<String> suffixExpressionList = parseSuffixExpressionList(ls);
+        System.out.println("后缀表达式的list="+suffixExpressionList);
+
+        System.out.printf("expression=计算结果=%d\n",cal(suffixExpressionList));
 
         //定义一个逆波兰表达式
         //(3+4)x5-6 => 3 4 + 5 x 6 -
         //说明为了方便 逆波兰表达式 的数字和符号使用空格隔开
-        String suffixExpression = "3 4 + 5 x 6 -";
+        String suffixExpression = "3 4 + 5 * 6 -";
         //思路分析
         //1、先将"3 4 + 5 x 6 -" => 放到ArrayList中
         //2、将ArrayList 传递给一个方法 遍历ArrayList 配合栈 完成计算
@@ -35,7 +39,7 @@ public class PolandNotation {
     }
 
     //将中缀表达式List 转成后缀表达式list =>  [1, +, (, (, 2, +, 3, ), *, 4, ), -, 5] => 1 2 3 + 4 * + 5 -
-    public static List<String> parseSufixExpressionLisst(List<String> ls){
+    public static List<String> parseSuffixExpressionList(List<String> ls){
         //定义两个栈
         Stack<String> s1 = new Stack<>();//符号栈
         //说明：因为s2这个栈 没有pop操作 后面我们还需要逆序输出 直接用List<String>替代s2
@@ -58,15 +62,20 @@ public class PolandNotation {
             }else {
                 //当item的优先级小于s1栈顶运算符 将s1栈顶运算符弹出并压入s2中 再次转到4.1与s1中的新的栈顶运算符比较
                 //缺少比较优先级的方法
-                while (s1.size() != 0){
-
+                while (s1.size() != 0 && Opreation.getValue(s1.peek()) >= Opreation.getValue(item)){
+                    s2.add(s1.pop());
                 }
+                //还需要将item压入栈
+                s1.push(item);
             }
-            
+        }
+        //将s1中剩余的运算符依次弹出并加入到s2
+        while (s1.size() != 0){
+            s2.add(s1.pop());
         }
 
-
-        return null;
+        //注意 因为是存放到List 因此按顺序输出就是对应的后缀表达式对应的list
+        return s2;
 
     }
 
@@ -142,7 +151,7 @@ public class PolandNotation {
                     case "-":
                         res = num1 - num2;
                         break;
-                    case "x":
+                    case "*":
                         res = num1 * num2;
                         break;
                     case "/":
@@ -165,5 +174,28 @@ class Opreation{
     private static int SUB = 1;
     private static int MUL = 2;
     private static int DIV = 2;
+
+    //返回对应的优先级数字
+    public static int getValue(String operation){
+        int result = 0;
+        switch (operation){
+            case "+":
+                result = ADD;
+                break;
+            case "-":
+                result = SUB;
+                break;
+            case "*":
+                result = MUL;
+                break;
+            case "/":
+                result = DIV;
+                break;
+                default:
+                    break;
+        }
+
+        return result;
+    }
 
 }
