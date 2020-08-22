@@ -41,7 +41,10 @@ public class InsertSort {
                 insertIndex--;
             }
             //当退出while循环时 说明插入的位置找到 insertIndex +1
-            array[insertIndex + 1] = insertValue;
+            //优化 判断是否需要赋值
+            if (insertIndex +1 != i){
+                array[insertIndex + 1] = insertValue;
+            }
 
             System.out.println("第"+i+"轮插入");
             System.out.println(Arrays.toString(array));
